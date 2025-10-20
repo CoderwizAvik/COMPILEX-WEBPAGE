@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CompileX - Frequently Asked Questions</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <style>
+        /* Custom font for a clean, modern look */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117; /* Dark background */
+            color: #e6edf3; /* Light text */
+        }
+        
+        /* Define the accent color for re-use */
+        .accent-color {
+            color: #007aff; /* Bright Blue */
+        }
+        .bg-accent {
+            background-color: #007aff;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <!-- Fixed Header/Navbar for Navigation -->
+    <header class="sticky top-0 z-10 w-full bg-[#0d1117] border-b border-gray-700 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <!-- Logo/Company Name -->
+            <a href="#" class="text-2xl font-extrabold text-white tracking-widest hover:text-gray-300 transition duration-300">
+                COMPILE<span class="text-gray-500 text-3xl">X</span>
+            </a>
+            <!-- Simple Navigation Link -->
+            <a href="#" class="accent-color hover:text-white transition duration-200 font-medium text-sm">
+                ← Back to Home
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content Wrapper -->
+    <main class="py-16 md:py-24">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- Title and Description -->
+            <div class="text-center mb-16">
+                <h1 class="text-6xl md:text-7xl font-bold text-white mb-4">
+                    Frequently Asked <span class="accent-color">Questions</span>
+                </h1>
+                <p class="text-lg text-gray-400 max-w-3xl mx-auto">
+                    Find quick answers about CompileX, our ventures (EduSankalp, UdyogSathi), and our technological vision.
+                </p>
+            </div>
+            
+            <!-- Accordion container -->
+            <div id="faq-accordion" class="space-y-4">
+
+                <!-- FAQ Item 1: General -->
+                <div class="faq-item p-6 rounded-xl bg-[#161b22] border border-gray-700 shadow-xl">
+                    <button class="faq-toggle w-full text-left flex justify-between items-center text-xl font-semibold text-white hover:text-gray-300 transition-colors duration-300" aria-expanded="false">
+                        <span>What is the mission of CompileX?</span>
+                        <i class="fas fa-chevron-down accent-color transform transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out pt-0">
+                        <p class="mt-4 text-gray-300 border-t border-gray-700 pt-4">
+                            CompileX is dedicated to **engineering the next frontier** by launching and supporting innovative ventures that leverage intelligent systems to solve complex challenges in education and career development.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 2: EduSankalp -->
+                <div class="faq-item p-6 rounded-xl bg-[#161b22] border border-gray-700 shadow-xl">
+                    <button class="faq-toggle w-full text-left flex justify-between items-center text-xl font-semibold text-white hover:text-gray-300 transition-colors duration-300" aria-expanded="false">
+                        <span>How is EduSankalp revolutionizing learning?</span>
+                        <i class="fas fa-chevron-down accent-color transform transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out pt-0">
+                        <p class="mt-4 text-gray-300 border-t border-gray-700 pt-4">
+                            EduSankalp provides **personalized learning paths** and uses AI to deliver adaptive content and assessments. It focuses on empowering students by identifying knowledge gaps and optimizing the learning process for subject mastery.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 3: UdyogSathi -->
+                <div class="faq-item p-6 rounded-xl bg-[#161b22] border border-gray-700 shadow-xl">
+                    <button class="faq-toggle w-full text-left flex justify-between items-center text-xl font-semibold text-white hover:text-gray-300 transition-colors duration-300" aria-expanded="false">
+                        <span>What is the primary function of UdyogSathi?</span>
+                        <i class="fas fa-chevron-down accent-color transform transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out pt-0">
+                        <p class="mt-4 text-gray-300 border-t border-gray-700 pt-4">
+                            UdyogSathi is our **career empowerment network**. Its primary function is to connect skilled talent with relevant opportunities by utilizing advanced skill mapping technology to ensure optimal professional growth for users.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 4: Partnerships -->
+                <div class="faq-item p-6 rounded-xl bg-[#161b22] border border-gray-700 shadow-xl">
+                    <button class="faq-toggle w-full text-left flex justify-between items-center text-xl font-semibold text-white hover:text-gray-300 transition-colors duration-300" aria-expanded="false">
+                        <span>How can I partner with CompileX?</span>
+                        <i class="fas fa-chevron-down accent-color transform transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out pt-0">
+                        <p class="mt-4 text-gray-300 border-t border-gray-700 pt-4">
+                            We are always looking for investors, institutional partners, and technology developers. Please reach out to us directly via email at <span class="accent-color">info@compilex.com</span> with a brief summary of your proposal.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 5: Careers -->
+                <div class="faq-item p-6 rounded-xl bg-[#161b22] border border-gray-700 shadow-xl">
+                    <button class="faq-toggle w-full text-left flex justify-between items-center text-xl font-semibold text-white hover:text-gray-300 transition-colors duration-300" aria-expanded="false">
+                        <span>Are you currently hiring?</span>
+                        <i class="fas fa-chevron-down accent-color transform transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out pt-0">
+                        <p class="mt-4 text-gray-300 border-t border-gray-700 pt-4">
+                            Yes, we maintain an updated list of open positions across all ventures on our Careers portal. You can find the link in the footer below. We look for passionate individuals ready to engineer the future.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- CTA/Contact block -->
+            <div class="mt-20 p-8 md:p-12 bg-gray-800 rounded-xl shadow-2xl text-center border-t-4 border-accent">
+                <h2 class="text-3xl font-bold text-white mb-3">Still Have Questions?</h2>
+                <p class="text-gray-400 mb-6">
+                    If you couldn't find the answer you were looking for, feel free to contact our support team.
+                </p>
+                <a href="mailto:support@compilex.com" class="inline-block px-8 py-3 text-lg font-semibold rounded-lg bg-accent text-white hover:bg-blue-600 transition duration-300 shadow-md">
+                    Contact Support
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#161b22] border-t border-gray-700 py-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-sm text-center text-gray-400">
+            <p>&copy; 2025 CompileX. All rights reserved. | <a href="#" class="accent-color hover:text-white">Privacy Policy</a> | <a href="#" class="accent-color hover:text-white">Terms of Use</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // --- FAQ ACCORDION JAVASCRIPT ---
+        function setupFaqAccordion() {
+            document.querySelectorAll('.faq-item').forEach(item => {
+                const button = item.querySelector('.faq-toggle');
+                const content = item.querySelector('.faq-content');
+                const icon = item.querySelector('.fa-chevron-down');
+
+                // Initial state setup for transition (hidden and zero height)
+                content.style.maxHeight = '0';
+                content.style.paddingTop = '0'; 
+                content.style.paddingBottom = '0';
+                content.style.transition = 'max-height 0.5s ease-in-out, padding-top 0.5s ease-in-out';
+
+                button.addEventListener('click', () => {
+                    const isExpanded = button.getAttribute('aria-expanded') === 'true';
+
+                    // Collapse all other open items
+                    document.querySelectorAll('.faq-toggle[aria-expanded="true"]').forEach(otherButton => {
+                        if (otherButton !== button) {
+                            otherButton.setAttribute('aria-expanded', 'false');
+                            otherButton.querySelector('.fa-chevron-down').classList.remove('rotate-180');
+                            otherButton.nextElementSibling.style.maxHeight = '0';
+                            otherButton.nextElementSibling.style.paddingTop = '0';
+                        }
+                    });
+
+                    // Toggle the current item
+                    if (isExpanded) {
+                        // Collapse
+                        button.setAttribute('aria-expanded', 'false');
+                        icon.classList.remove('rotate-180');
+                        content.style.maxHeight = '0';
+                        content.style.paddingTop = '0';
+                    } else {
+                        // Expand
+                        button.setAttribute('aria-expanded', 'true');
+                        icon.classList.add('rotate-180');
+                        // Set maxHeight to scrollHeight plus buffer for padding and border
+                        content.style.maxHeight = content.scrollHeight + 60 + 'px'; 
+                        content.style.paddingTop = '1rem'; /* Add padding back to show content */
+                    }
+                });
+            });
+        }
+
+        window.onload = setupFaqAccordion;
+    </script>
+</body>
+</html>

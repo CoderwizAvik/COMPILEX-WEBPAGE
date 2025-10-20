@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CompileX - Engineering Tomorrow</title>
+    <!-- Load Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Font Awesome for Icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLMDJ8uR2KFA3c9Qp6WpLpD32N5h/U/v4e7xY6Lq1/0E8z8T3rLg4N5xGZ5W5zG5A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        /* Custom font and base styling for the dark, minimalist theme */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000000; /* Deep black background */
+            color: #f5f5f7; /* Near-white text for contrast */
+            scroll-behavior: smooth;
+            overflow-x: hidden; /* Prevent horizontal scroll from space elements */
+        }
+
+        /* SPACE BACKGROUND STYLING */
+        #space-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Behind all content */
+            pointer-events: none; /* Allow interaction with content above */
+        }
+
+        #starfield-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* Meteor animation (unchanged) */
+        @keyframes meteor-shower {
+            0% { transform: translate(-100vw, -100vh) rotate(45deg); opacity: 0; }
+            5% { opacity: 1; }
+            100% { transform: translate(100vw, 100vh) rotate(45deg); opacity: 0; }
+        }
+
+        .meteor {
+            position: absolute;
+            width: 3px;
+            height: 150px;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0) 100%);
+            border-radius: 50%;
+            opacity: 0;
+            animation: meteor-shower linear infinite;
+            filter: blur(1px);
+            z-index: -1;
+        }
+
+        .meteor:nth-child(1) { top: 10%; left: 20%; animation-delay: 0s; animation-duration: 10s; }
+        .meteor:nth-child(2) { top: 30%; left: 70%; animation-delay: 4s; animation-duration: 12s; }
+        .meteor:nth-child(3) { top: 50%; left: 40%; animation-delay: 8s; animation-duration: 9s; }
+        .meteor:nth-child(4) { top: 0%; left: 50%; animation-delay: 2s; animation-duration: 15s; }
+        .meteor:nth-child(5) { top: 80%; left: 10%; animation-delay: 6s; animation-duration: 11s; }
+
+        /* FLOATING TEXT ANIMATION (Zero Gravity Effect - Unchanged) */
+        @keyframes floatInSpace {
+            0% { transform: translate(0px, 0px) rotate(0deg); }
+            33% { transform: translate(3px, -5px) rotate(0.4deg); }
+            66% { transform: translate(-2px, 6px) rotate(-0.5deg); }
+            100% { transform: translate(0px, 0px) rotate(0deg); }
+        }
+
+        .floating-text {
+            animation: floatInSpace 18s ease-in-out infinite alternate;
+        }
+
+        /* Highlight gradient for text: GALAXY/3D EFFECT (BRIGHTER CORE - Unchanged) */
+        .text-gradient-primary {
+            background-image: linear-gradient(135deg, #7c90e0 0%, #c050b0 30%, #ff99e6 60%, #66ffff 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 
+                1px 1px 5px rgba(0, 0, 0, 0.6),
+                0 0 8px rgba(255, 128, 212, 0.8),
+                0 0 15px rgba(51, 255, 255, 0.5);
+        }
+
+        /* --- ASTRONAUT SWEEPING ANIMATION --- (Restored) */
+        @keyframes astronautSweep {
+            0% { transform: translate(150%, 50%) rotate(10deg) scale(0.8); opacity: 0; }
+            10% { opacity: 0.2; }
+            50% { transform: translate(-50%, -20%) rotate(-5deg) scale(1.1); opacity: 0.3; }
+            90% { opacity: 0.1; }
+            100% { transform: translate(-150%, 50%) rotate(10deg) scale(0.8); opacity: 0; }
+        }
+
+        .astronaut-bg {
+            position: fixed; 
+            top: 50%;
+            left: 50%;
+            width: 800px; 
+            height: 800px;
+            object-fit: contain;
+            z-index: 5; /* Behind text (which is z-10) */
+            pointer-events: none;
+            animation: astronautSweep 40s linear infinite;
+        }
+        
+        /* Responsive Adjustments for Mobile */
+        @media (max-width: 768px) {
+            .astronaut-bg {
+                width: 400px; 
+                height: 400px;
+            }
+        }
+
+        /* ------------------------------------------- */
+        /* --- NEW: UFO AND LIGHT BEAM STYLING --- */
+        /* ------------------------------------------- */
+
+        @keyframes ufoFloat {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(-5px, 10px) rotate(0.5deg); }
+            50% { transform: translate(5px, -10px) rotate(-0.5deg); }
+            75% { transform: translate(-5px, 5px) rotate(0.2deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+
+        .ufo-wrapper {
+            position: absolute; /* Positioned relative to its parent (#main) */
+            bottom: 50px; /* MOVED UP: 50px above the bottom of the section for visibility */
+            left: 10%; /* MOVED LEFT: Positioned near the left edge */
+            transform: translateX(-50%); /* Centers the UFO body on the 10% mark */
+            width: 180px; 
+            height: 80px;
+            z-index: 8; /* Above astronaut, below text (via text-gradient) */
+            pointer-events: none;
+            animation: ufoFloat 15s ease-in-out infinite alternate;
+        }
+
+        /* Simple UFO Design using CSS Shapes */
+        .ufo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .ufo-body {
+            width: 150px;
+            height: 40px;
+            background: radial-gradient(circle at center, #607d8b, #37474f);
+            border-radius: 50% / 100% 100% 0 0;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 0;
+            border: 2px solid #b0bec5;
+            box-shadow: 0 0 10px #00ffff55;
+        }
+        .ufo-cab {
+            width: 60px;
+            height: 30px;
+            background: radial-gradient(circle at center, #81d4fa, #0288d1);
+            border-radius: 50% 50% 0 0;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 5px;
+            border: 1px solid #000;
+            box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Animated Lights on the UFO body */
+        .ufo-lights {
+            position: absolute;
+            width: 120px;
+            height: 3px;
+            bottom: 3px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: space-around;
+        }
+        .ufo-lights div { /* Use a div for each light for better control */
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #ffeb3b; /* Yellow lights */
+            box-shadow: 0 0 5px #ffeb3b, 0 0 10px #ffeb3b;
+            animation: pulseLight 1s infinite alternate;
+        }
+
+        @keyframes pulseLight {
+            from { opacity: 0.7; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1.1); }
+        }
+
+        /* The Light Beam targeting the text - Now angled and wide from the left */
+        .ufo-light-beam {
+            position: absolute;
+            top: 50px; /* Starts from the bottom of the UFO body */
+            left: 100%; /* Start beam to the right of the UFO */
+            transform: translateX(-50%);
+            width: 1200px; /* Massive width to cover the distance to center */
+            height: 700px; 
+            background: linear-gradient(to top, 
+                rgba(0, 118, 255, 0.4) 0%, /* Comp Accent Blue at the target (text) */
+                rgba(255, 255, 255, 0.1) 10%, 
+                rgba(0, 0, 0, 0) 100%
+            );
+            /* Clipping to make it a trapezoid beam directed diagonally up-right towards the center text. */
+            clip-path: polygon(
+                0% 100%,  /* Base point 1 (Left of UFO) */
+                10% 100%, /* Base point 2 (Right of UFO) */
+                85% 0%,   /* Top point 1 (Targeting center-left of text) */
+                75% 0%    /* Top point 2 (Targeting center-right of text) */
+            ); 
+            z-index: 1; /* Below the text, above the astronaut */
+            filter: blur(8px); /* More blur for a softer light */
+            opacity: 0.7;
+            
+            /* Gentle pulse and sway */
+            animation: beamPulse 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes beamPulse {
+            from { opacity: 0.7; clip-path: polygon(0% 100%, 10% 100%, 85% 0%, 75% 0%); }
+            to { opacity: 0.5; clip-path: polygon(-2% 100%, 12% 100%, 87% -5%, 73% -5%); } /* Slight shift and larger spread */
+        }
+
+
+        /* Other styles (unchanged) */
+        #navbar {
+            backdrop-filter: blur(10px);
+            background-color: rgba(29, 29, 31, 0.8);
+            box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
+            transition: background-color 0.3s ease;
+        }
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 1s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Ensure the text is above the light beam */
+        #main .animate-on-scroll {
+            position: relative;
+            z-index: 10; 
+        }
+
+        /* --- VIDEO SHOWCASE STYLING --- */
+        .video-wrapper {
+            width: 100%;
+            max-width: 600px; /* Constrains max size on larger screens */
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio (9/16 = 0.5625) */
+            transition: all 0.5s ease;
+        }
+        .video-wrapper video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'comp-grey': '#424245',
+                        'comp-accent': '#007aff', /* Apple Blue */
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <!-- SPACE BACKGROUND CONTAINER --><div id="space-background">
+        <canvas id="starfield-canvas"></canvas>
+        <!-- Meteors --><div class="meteor"></div>
+        <div class="meteor"></div>
+        <div class="meteor"></div>
+        <div class="meteor"></div>
+        <div class="meteor"></div>
+
+        <!-- ASTRONAUT IMAGE - Using UPLOADED FILE (RESTORED) --><div class="astronaut-bg">
+            <img src="Element/astronaut-holding-smartphone-with-empty-white-screen- (1) (1).png" 
+                alt="Astronaut using a smartphone in space" 
+                class="w-full h-full object-contain" />
+        </div>
+        <!-- END ASTRONAUT IMAGE --></div>
+
+    <!-- Fixed Navigation Bar --><nav id="navbar" class="fixed top-0 left-0 w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-12 flex items-center justify-between">
+            <!-- Logo/Company Name --><a href="#" class="text-xl font-extrabold text-white tracking-widest hover:text-comp-accent transition duration-300">
+                COMPILE<span class="text-comp-grey text-2xl">X</span> <!-- Extra bold and large X --></a>
+            <!-- Navigation Links (Simplified) --><div class="hidden md:flex space-x-8 text-sm font-light">
+                <a href="#main" class="text-gray-300 hover:text-white transition duration-200">Home</a>
+                <a href="#edusankalp" class="text-gray-300 hover:text-white transition duration-200">EduSankalp</a>
+                <a href="#udyogsathi" class="text-gray-300 hover:text-white transition duration-200">UdyogSathi</a>
+                <a href="#contact" class="text-gray-300 hover:text-white transition duration-200">Contact</a>
+            </div>
+            <!-- Action Button --><a href="#contact" class="text-sm font-semibold text-comp-accent hover:text-white transition duration-200">
+                Connect
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content Wrapper --><main class="pt-12 relative z-10"> 
+        
+        <!-- 1. HERO SECTION (Main Company) --><section id="main" class="min-h-screen flex items-center justify-center text-center p-4 relative overflow-hidden">
+            
+            <div class="max-w-6xl mx-auto px-4 animate-on-scroll relative z-10"> 
+                <h1 class="text-7xl md:text-9xl font-extrabold leading-none mb-6 floating-text">
+                    <span class="text-gradient-primary">Engineering</span>
+                    <br class="hidden sm:inline">
+                    the Next Frontier.
+                </h1>
+                <p class="text-xl md:text-2xl font-light text-comp-grey max-w-3xl mx-auto mb-10">
+                    CompileX is the nexus of innovation, launching ventures that redefine what's possible in intelligent systems and optimized development.
+                </p>
+                <a href="#edusankalp" class="inline-block px-8 py-3 text-lg font-semibold rounded-full border border-comp-accent text-white hover:bg-comp-accent transition duration-500">
+                    Discover Our Ventures
+                </a>
+            </div>
+
+            <!-- NEW: UFO AND LIGHT BEAM (positioned relative to #main for easier alignment with text) --><div class="ufo-wrapper">
+                <div class="ufo">
+                    <div class="ufo-body"></div>
+                    <div class="ufo-cab"></div>
+                    <div class="ufo-lights">
+                        <div></div><div></div><div></div><div></div>
+                    </div>
+                </div>
+                <!-- The light beam is here, pointing upwards to the text --><div class="ufo-light-beam"></div> 
+            </div>
+            <!-- END UFO --></section>
+
+        <!-- 2. EDUSANKALP SECTION (Startup 1) --><section id="edusankalp" class="py-24 md:py-36 min-h-[80vh] flex items-center">
+            <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-12 items-center animate-on-scroll">
+                <!-- Text Content --><div class="md:order-1 order-2">
+                    <span class="text-comp-accent text-sm font-semibold tracking-widest uppercase mb-2 block">Our First Launch</span>
+                    <h2 class="text-5xl md:text-7xl font-bold mb-4 text-white">EduSankalp.</h2>
+                    <p class="text-2xl font-light text-comp-grey mb-6">
+                        **Future of Learning.** We build personalized, adaptive educational platforms designed to empower students and modernize knowledge delivery.
+                    </p>
+                    <ul class="space-y-3 text-lg text-gray-400">
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 mr-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.49 9.61 5.028 8.32 5.028M12 6.253c1.17 0 2.34-.462 3.48-1.225V13M12 6.253a8.96 8.96 0 00-3.48 1.225"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253a8.96 8.96 0 011.728 0m-1.728 0a8.96 8.96 0 00-1.728 0m3.456 0h0"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.832 5.028H8.32M15.68 5.028h-2.512m2.512 0a8.96 8.96 0 010 3.149"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.32 5.028v14.072M15.68 5.028v14.072"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.832 18.093c.319.043.642.064.97.064 1.375 0 2.652-.423 3.738-1.157M8.32 18.093v14.072M15.68 18.093v14.072"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.832 18.093c.319.043.642.064.97.064 1.375 0 2.652-.423 3.738-1.157m-3.738 1.157H12M12 18.093V6.253"></path></svg>
+                            Personalized Learning Paths
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 mr-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v14c0 1.657-1.343 3-3 3H9z"></path></svg>
+                            AI-Driven Assessment Tools
+                        </li>
+                    </ul>
+                </div>
+                <!-- Video Placeholder --><div class="md:order-2 order-1 overflow-hidden">
+                    <div class="video-wrapper rounded-2xl border-4 border-comp-accent"
+                        style="box-shadow: 0 0 40px rgba(0, 118, 255, 0.3);"
+                        onmouseover="this.style.boxShadow='0 0 60px rgba(0, 118, 255, 0.6)'"
+                        onmouseout="this.style.boxShadow='0 0 40px rgba(0, 118, 255, 0.3)'"
+                    >
+                        <video 
+                            class="w-full h-full object-cover rounded-xl" 
+                            autoplay 
+                            loop 
+                            muted 
+                            playsinline
+                            disablePictureInPicture
+                        >
+                            <!-- IMPORTANT: Replace the placeholder URL below with your actual video source --><source src="Element/VID-20251019-WA0002.mp4" type="video/mp4">
+                            <!-- Fallback message if video cannot be played -->Your browser does not support the video tag.
+                        </video>
+                    </div>
+                    <p class="mt-4 text-center text-sm text-comp-grey italic">
+                        Real-time simulation. Muted autoplay preview.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. UDYOGSATHI SECTION (Startup 2) --><section id="udyogsathi" class="py-24 md:py-36 min-h-[80vh] flex items-center bg-gray-900/50">
+            <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-12 items-center animate-on-scroll">
+                <!-- Video Placeholder --><div class="overflow-hidden">
+                    <div class="video-wrapper rounded-2xl border-4 border-white/20"
+                        style="box-shadow: 0 0 40px rgba(255, 255, 255, 0.2);"
+                        onmouseover="this.style.boxShadow='0 0 60px rgba(255, 255, 255, 0.4)'"
+                        onmouseout="this.style.boxShadow='0 0 40px rgba(255, 255, 255, 0.2)'"
+                    >
+                        <video 
+                            class="w-full h-full object-cover rounded-xl" 
+                            autoplay 
+                            loop 
+                            muted 
+                            playsinline
+                            disablePictureInPicture
+                        >
+                            <!-- IMPORTANT: Replace the placeholder URL below with your actual video source --><source src="Element/invideo-ai-1080 Stop Waiting.mp4" type="video/mp4">
+                            <!-- Fallback message if video cannot be played -->Your browser does not support the video tag.
+                        </video>
+                    </div>
+                    <p class="mt-4 text-center text-sm text-comp-grey italic">
+                        Real-time simulation. Muted autoplay preview.
+                    </p>
+                </div>
+                <!-- Text Content --><div>
+                    <span class="text-comp-accent text-sm font-semibold tracking-widest uppercase mb-2 block">The Accelerator</span>
+                    <h2 class="text-5xl md:text-7xl font-bold mb-4 text-white">UdyogSathi.</h2>
+                    <p class="text-2xl font-light text-comp-grey mb-6">
+                        **Career Empowerment.** We connect talent with opportunity through skill mapping and a network dedicated to professional growth.
+                    </p>
+                    <ul class="space-y-3 text-lg text-gray-400">
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 mr-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-4a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Global Skill Matching
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 mr-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a2 2 0 012-2h12a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V5z"></path></svg>
+                            Industry Certification Tracking
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. CONTACT/CTA SECTION --><section id="contact" class="py-24 md:py-32 text-center">
+            <div class="max-w-4xl mx-auto px-4 animate-on-scroll">
+                <h2 class="text-4xl md:text-6xl font-bold mb-4 text-white">Ready for the Future?</h2>
+                <p class="text-xl font-light text-comp-grey mb-8">
+                    Partner with CompileX to turn groundbreaking ideas into market realities.
+                </p>
+                <a href="mailto:info@compilex.com" class="inline-block px-10 py-4 text-xl font-semibold rounded-full bg-white text-black hover:bg-comp-accent hover:text-white transition duration-500 shadow-lg">
+                    Contact Our Team
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer --><footer class="bg-[#111111] border-t border-gray-800 py-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-sm text-gray-400">
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-8">
+                <!-- Col 1: Logo & Copyright --><div class="col-span-2 md:col-span-1">
+                    <p class="text-xl font-bold text-white mb-2">CompileX</p>
+                    <p>&copy; 2025 CompileX. All rights reserved.</p>
+                </div>
+
+                <!-- Col 2: Ventures --><div>
+                    <h5 class="font-semibold text-white mb-3 uppercase">Ventures</h5>
+                    <ul class="space-y-2">
+                        <li><a href="#edusankalp" class="hover:text-white transition duration-200">EduSankalp</a></li>
+                        <li><a href="#udyogsathi" class="hover:text-white transition duration-200">UdyogSathi</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Company --><div>
+                    <h5 class="font-semibold text-white mb-3 uppercase">Company</h5>
+                    <ul class="space-y-2">
+                        <li><a href="aboutus.html" class="hover:text-white transition duration-200">About Us</a></li>
+                        <li><a href="#contact" class="hover:text-white transition duration-200">Careers</a></li>
+                        <li><a href="#" class="hover:text-white transition duration-200">Press</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 4: Support --><div>
+                    <h5 class="font-semibold text-white mb-3 uppercase">Support</h5>
+                    <ul class="space-y-2">
+                        <li><a href="faqs.html" class="hover:text-white transition duration-200">FAQs</a></li>
+                        <li><a href="privacy.html" class="hover:text-white transition duration-200">Privacy Policy</a></li>
+                        <li><a href="terms.html" class="hover:text-white transition duration-200">Terms of Use</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 5: Social (Icons) --><div>
+                    <h5 class="font-semibold text-white mb-3 uppercase">Connect</h5>
+                    <div class="flex space-x-4">
+                        <a href="#" aria-label="LinkedIn" class="text-gray-400 hover:text-comp-accent transition duration-200">
+                            <i class="fab fa-linkedin-in text-xl"></i>
+                        </a>
+                        <a href="#" aria-label="Twitter" class="text-gray-400 hover:text-comp-accent transition duration-200">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        <a href="#" aria-label="Facebook" class="text-gray-400 hover:text-comp-accent transition duration-200">
+                            <i class="fab fa-facebook-f text-xl"></i>
+                        </a>
+                        <a href="#" aria-label="Instagram" class="text-gray-400 hover:text-comp-accent transition duration-200">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                        <a href="#" aria-label="Discord" class="text-gray-400 hover:text-comp-accent transition duration-200">
+                            <i class="fab fa-discord text-xl"></i>
+                        </a>
+                        <a href="#" aria-label="GitHub" class="text-gray-400 hover:text-comp-accent transition duration-200">
+                            <i class="fab fa-github text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 pt-4 border-t border-gray-700 text-center text-xs">
+                <p>CompileX is committed to sustainable and responsible technology development.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- SCROLL ANIMATION JAVASCRIPT ---
+
+        function handleScrollAnimation() {
+            const elements = document.querySelectorAll('.animate-on-scroll');
+            elements.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.8 && rect.bottom > 0) {
+                    el.classList.add('is-visible');
+                }
+            });
+        }
+
+        // --- STARFIELD JAVASCRIPT ---
+        const canvas = document.getElementById('starfield-canvas');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+        const numStars = 500; 
+        const starSpeed = 0.5; 
+
+        function initStars() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            stars = [];
+            for (let i = 0; i < numStars; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 1.5 + 0.5, 
+                    speed: Math.random() * starSpeed + 0.1, 
+                    color: `rgba(255, 255, 255, ${Math.random() * 0.7 + 0.3})`
+                });
+            }
+        }
+
+        function animateStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); 
+
+            for (let i = 0; i < numStars; i++) {
+                const star = stars[i];
+
+                star.y += star.speed;
+                star.x += (star.speed * 0.1); 
+
+                if (star.y > canvas.height) {
+                    star.y = 0;
+                    star.x = Math.random() * canvas.width; 
+                }
+                if (star.x > canvas.width) {
+                    star.x = 0;
+                    star.y = Math.random() * canvas.height; 
+                }
+
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.size / 2, 0, Math.PI * 2); 
+                ctx.fillStyle = star.color;
+                ctx.fill();
+            }
+            requestAnimationFrame(animateStars);
+        }
+
+        // Initialize and attach listeners
+        window.addEventListener('scroll', handleScrollAnimation);
+        window.addEventListener('load', () => {
+            handleScrollAnimation(); 
+            initStars(); 
+            animateStars(); 
+        });
+        window.addEventListener('resize', initStars);
+    </script>
+</body>
+</html>
