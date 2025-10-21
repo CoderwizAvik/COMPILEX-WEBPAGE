@@ -25,6 +25,7 @@
 
         h1, h2, h3 {
             font-family: 'Space Grotesk', sans-serif;
+            word-break: break-word;
         }
 
         /* Enhanced Space Background - Fixed positioning */
@@ -34,7 +35,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            z-index: -1;
+            z-index: -2;
             pointer-events: none;
         }
 
@@ -44,6 +45,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
+            z-index: -2;
         }
 
         /* Subtle Ambient Particles - Professional */
@@ -55,6 +57,7 @@
             animation: ambientFloat 25s infinite ease-in-out;
             pointer-events: none;
             mix-blend-mode: screen;
+            z-index: -1;
         }
 
         @keyframes ambientFloat {
@@ -98,6 +101,7 @@
             animation: meteor-shower linear infinite;
             filter: blur(0.5px);
             box-shadow: 0 0 6px rgba(255, 255, 255, 0.5);
+            z-index: -1;
         }
 
         /* Professional Navbar - True Glassmorphism */
@@ -120,8 +124,8 @@
             box-shadow: 0 8px 32px rgba(0, 122, 255, 0.15);
         }
 
-        /* Astronaut - Professional Floating */
-        .astronaut-wrapper {
+        /* Big Astronaut - Professional Floating */
+        .big-astronaut-wrapper {
             position: fixed;
             top: 50%;
             left: 50%;
@@ -131,18 +135,37 @@
             z-index: 1;
             pointer-events: none;
             opacity: 0;
-            animation: astronautEntrance 2s ease-out 0.5s forwards, 
-                       astronautFloat 20s ease-in-out 2.5s infinite;
+            transition: all 1s ease-out;
         }
 
-        @keyframes astronautEntrance {
+        .big-astronaut-wrapper.show {
+            animation: bigAstronautEntrance 2s ease-out forwards, 
+                       astronautFloat 20s ease-in-out 2s infinite;
+        }
+
+        .big-astronaut-wrapper.hide {
+            animation: fadeOutDown 1s ease-out forwards;
+        }
+
+        @keyframes bigAstronautEntrance {
             from {
                 opacity: 0;
-                transform: translate(-50%, -40%) scale(0.8);
+                transform: translate(-50%, 100vh);
             }
             to {
                 opacity: 0.35;
-                transform: translate(-50%, -50%) scale(1);
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        @keyframes fadeOutDown {
+            from {
+                opacity: 0.35;
+                transform: translate(-50%, -50%);
+            }
+            to {
+                opacity: 0;
+                transform: translate(-50%, 100vh);
             }
         }
 
@@ -165,11 +188,51 @@
             }
         }
 
-        .astronaut-wrapper img {
+        .big-astronaut-wrapper img {
             width: 100%;
             height: 100%;
             object-fit: contain;
             filter: brightness(0.8) contrast(1.1);
+        }
+
+        /* Floating Astronaut */
+        .floating-astronaut-wrapper {
+            position: fixed;
+            top: 20%;
+            left: 10%;
+            width: 200px;
+            height: 200px;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 1.0s ease-in-out;
+        }
+
+        .floating-astronaut-wrapper.show {
+            opacity: 0.6;
+            animation: spaceFloat 30s ease-in-out infinite;
+        }
+
+        @keyframes spaceFloat {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(20vw, -10vh) rotate(5deg);
+            }
+            50% {
+                transform: translate(-15vw, 15vh) rotate(-3deg);
+            }
+            75% {
+                transform: translate(10vw, 20vh) rotate(2deg);
+            }
+        }
+
+        .floating-astronaut-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: brightness(0.25) contrast(1.2);
         }
 
         /* Enhanced Text Gradient - Premium */
@@ -331,10 +394,61 @@
         /* Responsive */
         @media (max-width: 768px) {
             .stat-number { font-size: 2rem; }
-            .astronaut-wrapper {
-                width: 400px;
-                height: 400px;
-                opacity: 0.2;
+            .big-astronaut-wrapper {
+                width: 300px;
+                height: 300px;
+            }
+            .floating-astronaut-wrapper {
+                width: 120px;
+                height: 120px;
+                top: 10%;
+                left: 5%;
+            }
+            h1 {
+                font-size: 3rem !important;
+            }
+            h2 {
+                font-size: 2.5rem !important;
+            }
+            .max-w-7xl {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            .px-6 {
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .btn-primary {
+                padding-left: 1rem;
+                padding-right: 1rem;
+                font-size: 0.875rem;
+            }
+            .video-wrapper {
+                padding-top: 75%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .big-astronaut-wrapper {
+                width: 250px;
+                height: 250px;
+            }
+            .floating-astronaut-wrapper {
+                width: 100px;
+                height: 100px;
+            }
+            h1 {
+                font-size: 2.5rem !important;
+            }
+            h2 {
+                font-size: 2rem !important;
+            }
+            .space-y-6 > * {
+                padding: 1rem;
             }
         }
 
@@ -384,9 +498,14 @@
         <div class="meteor" style="top: 80%; left: 10%; animation-delay: 8s; animation-duration: 14s;"></div>
     </div>
 
-    <!-- Astronaut - Professional Floating -->
-    <div class="astronaut-wrapper">
+    <!-- Big Astronaut - Professional Floating -->
+    <div class="big-astronaut-wrapper" id="bigAstronaut">
         <img src="Element/astronaut-holding-smartphone-with-empty-white-screen- (1) (1).png" alt="Astronaut in space">
+    </div>
+
+    <!-- Floating Astronaut -->
+    <div class="floating-astronaut-wrapper" id="floatingAstronaut">
+        <img src="Element/floating_astronaut_w_c.png" alt="Floating Astronaut">
     </div>
 
     <!-- Subtle Ambient Particles -->
@@ -396,10 +515,10 @@
 
     <!-- Navigation -->
     <nav id="navbar" class="fixed top-0 left-0 w-full z-50">
-        <div class="max-w-7xl mx-auto px-6 lg:px-8 h-20 flex items-center justify-between">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <img class="compilex-nav-logo" src="Element/CompileX_logo.png" alt="">
-            <a href="#" class="text-2xl font-extrabold text-white tracking-wider hover:text-comp-accent transition duration-300">
-                COMPILE<span class="text-comp-accent text-3xl">X</span>
+            <a href="#" class="text-xl sm:text-2xl font-extrabold text-white tracking-wider hover:text-comp-accent transition duration-300">
+                COMPILE<span class="text-comp-accent text-2xl sm:text-3xl">X</span>
             </a>
             <div class="hidden md:flex items-center space-x-10 text-sm font-medium">
                 <a href="#main" class="text-gray-300 hover:text-white transition duration-300">Home</a>
@@ -408,7 +527,7 @@
                 <a href="#udyogsathi" class="text-gray-300 hover:text-white transition duration-300">UdyogSathi</a>
                 <a href="#contact" class="text-gray-300 hover:text-white transition duration-300">Contact</a>
             </div>
-            <a href="#contact" class="btn-primary px-8 py-3 rounded-full text-white font-semibold text-sm shadow-lg transition duration-300">
+            <a href="#contact" class="btn-primary px-6 py-3 sm:px-8 rounded-full text-white font-semibold text-sm shadow-lg transition duration-300">
                 Get Started
             </a>
         </div>
@@ -419,22 +538,22 @@
 
         <!-- Hero Section -->
         <section id="main" class="min-h-screen flex items-center justify-center text-center px-4 relative">
-            <div class="max-w-6xl mx-auto animate-on-scroll relative z-10">
-                <h1 class="text-6xl md:text-8xl lg:text-9xl font-extrabold leading-none mb-8 floating-text">
+            <div class="max-w-6xl mx-auto animate-on-scroll relative z-10 w-full">
+                <h1 class="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-extrabold leading-none mb-8 floating-text">
                     <span class="text-gradient-primary">Engineering</span>
                     <br>
                     <span class="text-white">the Next Frontier</span>
                 </h1>
-                <p class="text-xl md:text-2xl font-light text-gray-400 max-w-3xl mx-auto mb-12 leading-relaxed">
+                <p class="text-lg sm:text-xl md:text-2xl font-light text-gray-400 max-w-3xl mx-auto mb-12 leading-relaxed">
                     CompileX is the nexus of innovation, launching ventures that redefine what's possible in 
                     <span class="text-white font-medium">intelligent systems</span> and 
                     <span class="text-white font-medium">optimized development</span>.
                 </p>
-                <div class="flex flex-col sm:flex-row gap-5 justify-center items-center">
-                    <a href="#edusankalp" class="btn-primary px-10 py-4 text-lg font-semibold rounded-full text-white shadow-2xl transition duration-500">
+                <div class="flex flex-col sm:flex-row gap-5 justify-center items-center w-full">
+                    <a href="#edusankalp" class="btn-primary px-8 py-4 text-base sm:text-lg font-semibold rounded-full text-white shadow-2xl transition duration-500 w-full sm:w-auto">
                         Explore Ventures <i class="fas fa-arrow-right ml-2"></i>
                     </a>
-                    <a href="#features" class="px-10 py-4 text-lg font-semibold rounded-full border-2 border-white/20 text-white hover:bg-white/5 hover:border-white/30 transition duration-500">
+                    <a href="#features" class="px-8 py-4 text-base sm:text-lg font-semibold rounded-full border-2 border-white/20 text-white hover:bg-white/5 hover:border-white/30 transition duration-500 w-full sm:w-auto">
                         Learn More
                     </a>
                 </div>
@@ -447,43 +566,43 @@
         </section>
 
         <!-- Features Section -->
-        <section id="features" class="py-32 relative">
-            <div class="max-w-7xl mx-auto px-6">
+        <section id="features" class="py-16 sm:py-32 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6">
                 <div class="text-center mb-20 animate-on-scroll">
                     <div class="premium-badge mb-6 mx-auto">Why Choose CompileX</div>
-                    <h2 class="text-5xl md:text-6xl font-bold mb-6 text-white">Built for the Future</h2>
-                    <p class="text-xl text-gray-400 max-w-2xl mx-auto">
+                    <h2 class="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 text-white">Built for the Future</h2>
+                    <p class="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto">
                         Cutting-edge technology meets visionary innovation
                     </p>
                 </div>
 
                 <div class="grid md:grid-cols-3 gap-8">
-                    <div class="glass-card animate-on-scroll text-center">
+                    <div class="glass-card animate-on-scroll text-center p-4 sm:p-8">
                         <div class="feature-icon mx-auto mb-6">
                             <i class="fas fa-rocket text-comp-accent text-2xl"></i>
                         </div>
-                        <h3 class="text-2xl font-bold mb-4 text-white">Rapid Innovation</h3>
-                        <p class="text-gray-400 leading-relaxed">
+                        <h3 class="text-xl sm:text-2xl font-bold mb-4 text-white">Rapid Innovation</h3>
+                        <p class="text-gray-400 leading-relaxed text-sm sm:text-base">
                             From concept to market in record time with agile methodologies and cutting-edge tech stacks.
                         </p>
                     </div>
 
-                    <div class="glass-card animate-on-scroll text-center" style="transition-delay: 0.1s;">
+                    <div class="glass-card animate-on-scroll text-center p-4 sm:p-8" style="transition-delay: 0.1s;">
                         <div class="feature-icon mx-auto mb-6">
                             <i class="fas fa-brain text-comp-accent text-2xl"></i>
                         </div>
-                        <h3 class="text-2xl font-bold mb-4 text-white">AI-Powered Solutions</h3>
-                        <p class="text-gray-400 leading-relaxed">
+                        <h3 class="text-xl sm:text-2xl font-bold mb-4 text-white">AI-Powered Solutions</h3>
+                        <p class="text-gray-400 leading-relaxed text-sm sm:text-base">
                             Leveraging machine learning and artificial intelligence to create intelligent, adaptive platforms.
                         </p>
                     </div>
 
-                    <div class="glass-card animate-on-scroll text-center" style="transition-delay: 0.2s;">
+                    <div class="glass-card animate-on-scroll text-center p-4 sm:p-8" style="transition-delay: 0.2s;">
                         <div class="feature-icon mx-auto mb-6">
                             <i class="fas fa-shield-alt text-comp-accent text-2xl"></i>
                         </div>
-                        <h3 class="text-2xl font-bold mb-4 text-white">Enterprise Security</h3>
-                        <p class="text-gray-400 leading-relaxed">
+                        <h3 class="text-xl sm:text-2xl font-bold mb-4 text-white">Enterprise Security</h3>
+                        <p class="text-gray-400 leading-relaxed text-sm sm:text-base">
                             Bank-grade security protocols protecting your data with end-to-end encryption.
                         </p>
                     </div>
@@ -492,8 +611,8 @@
         </section>
 
         <!-- Stats Section -->
-        <section id="stats" class="py-32">
-            <div class="max-w-7xl mx-auto px-6">
+        <section id="stats" class="py-16 sm:py-32">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6">
                 <div class="grid md:grid-cols-4 gap-12 text-center">
                     <div class="animate-on-scroll">
                         <div class="stat-number mb-2" data-target="50000">0</div>
@@ -516,53 +635,53 @@
         </section>
 
         <!-- EduSankalp Section -->
-        <section id="edusankalp" class="py-32 min-h-screen flex items-center relative">
-            <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
+        <section id="edusankalp" class="py-16 sm:py-32 min-h-screen flex items-center relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 grid md:grid-cols-2 gap-16 items-center w-full">
                 <div class="animate-on-scroll md:order-1 order-2">
                     <div class="premium-badge mb-6">Our First Launch</div>
-                    <h2 class="text-6xl md:text-7xl font-bold mb-6 text-white">EduSankalp</h2>
-                    <p class="text-2xl font-light text-gray-400 mb-10 leading-relaxed">
+                    <h2 class="text-4xl sm:text-6xl md:text-7xl font-bold mb-6 text-white">EduSankalp</h2>
+                    <p class="text-xl sm:text-2xl font-light text-gray-400 mb-10 leading-relaxed">
                         <span class="text-white font-semibold">Revolutionizing Education.</span> We build personalized, adaptive learning platforms powered by AI to empower students worldwide.
                     </p>
                     
                     <div class="space-y-6 mb-10">
-                        <div class="flex items-start space-x-4 glass-card">
+                        <div class="flex items-start space-x-4 glass-card p-4 sm:p-6">
                             <div class="feature-icon flex-shrink-0">
                                 <i class="fas fa-graduation-cap text-comp-accent"></i>
                             </div>
                             <div>
-                                <h4 class="text-lg font-bold text-white mb-2">Personalized Learning Paths</h4>
-                                <p class="text-gray-400">Adaptive curricula that adjust to each student's pace and learning style.</p>
+                                <h4 class="text-base sm:text-lg font-bold text-white mb-2">Personalized Learning Paths</h4>
+                                <p class="text-gray-400 text-sm sm:text-base">Adaptive curricula that adjust to each student's pace and learning style.</p>
                             </div>
                         </div>
                         
-                        <div class="flex items-start space-x-4 glass-card">
+                        <div class="flex items-start space-x-4 glass-card p-4 sm:p-6">
                             <div class="feature-icon flex-shrink-0">
                                 <i class="fas fa-chart-line text-comp-accent"></i>
                             </div>
                             <div>
-                                <h4 class="text-lg font-bold text-white mb-2">AI-Driven Assessment</h4>
-                                <p class="text-gray-400">Real-time progress tracking with intelligent recommendations.</p>
+                                <h4 class="text-base sm:text-lg font-bold text-white mb-2">AI-Driven Assessment</h4>
+                                <p class="text-gray-400 text-sm sm:text-base">Real-time progress tracking with intelligent recommendations.</p>
                             </div>
                         </div>
 
-                        <div class="flex items-start space-x-4 glass-card">
+                        <div class="flex items-start space-x-4 glass-card p-4 sm:p-6">
                             <div class="feature-icon flex-shrink-0">
                                 <i class="fas fa-globe text-comp-accent"></i>
                             </div>
                             <div>
-                                <h4 class="text-lg font-bold text-white mb-2">Global Accessibility</h4>
-                                <p class="text-gray-400">Multi-language support reaching learners across 50+ countries.</p>
+                                <h4 class="text-base sm:text-lg font-bold text-white mb-2">Global Accessibility</h4>
+                                <p class="text-gray-400 text-sm sm:text-base">Multi-language support reaching learners across 50+ countries.</p>
                             </div>
                         </div>
                     </div>
 
-                    <a href="#contact" class="btn-primary inline-block px-10 py-4 rounded-full text-white font-semibold shadow-2xl transition duration-500">
+                    <a href="#contact" class="btn-primary inline-block px-8 py-4 rounded-full text-white font-semibold shadow-2xl transition duration-500 w-full sm:w-auto">
                         Request Demo <i class="fas fa-arrow-right ml-2"></i>
                     </a>
                 </div>
 
-                <div class="animate-on-scroll md:order-2 order-1">
+                <div class="animate-on-scroll md:order-2 order-1 w-full">
                     <div class="video-wrapper border-4 border-comp-accent/30">
                         <video class="w-full h-full object-cover" autoplay loop muted playsinline>
                             <source src="Element/VID-20251019-WA0002.mp4" type="video/mp4">
@@ -577,9 +696,9 @@
         </section>
 
         <!-- UdyogSathi Section -->
-        <section id="udyogsathi" class="py-32 min-h-screen flex items-center relative">
-            <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
-                <div class="animate-on-scroll">
+        <section id="udyogsathi" class="py-16 sm:py-32 min-h-screen flex items-center relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 grid md:grid-cols-2 gap-16 items-center w-full">
+                <div class="animate-on-scroll w-full">
                     <div class="video-wrapper border-4 border-white/10">
                         <video class="w-full h-full object-cover" autoplay loop muted playsinline>
                             <source src="Element/invideo-ai-1080 Stop Waiting.mp4" type="video/mp4">
@@ -593,44 +712,44 @@
 
                 <div class="animate-on-scroll">
                     <div class="premium-badge mb-6" style="background: rgba(168, 85, 247, 0.08); border-color: rgba(168, 85, 247, 0.2); color: rgba(168, 85, 247, 0.9);">The Accelerator</div>
-                    <h2 class="text-6xl md:text-7xl font-bold mb-6 text-white">UdyogSathi</h2>
-                    <p class="text-2xl font-light text-gray-400 mb-10 leading-relaxed">
+                    <h2 class="text-4xl sm:text-6xl md:text-7xl font-bold mb-6 text-white">UdyogSathi</h2>
+                    <p class="text-xl sm:text-2xl font-light text-gray-400 mb-10 leading-relaxed">
                         <span class="text-white font-semibold">Empowering Careers.</span> Connecting talent with opportunity through intelligent skill mapping and professional networking.
                     </p>
                     
                     <div class="space-y-6 mb-10">
-                        <div class="flex items-start space-x-4 glass-card">
+                        <div class="flex items-start space-x-4 glass-card p-4 sm:p-6">
                             <div class="feature-icon flex-shrink-0" style="background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(168, 85, 247, 0.1)); border-color: rgba(168, 85, 247, 0.3);">
                                 <i class="fas fa-users" style="color: #a855f7;"></i>
                             </div>
                             <div>
-                                <h4 class="text-lg font-bold text-white mb-2">Global Skill Matching</h4>
-                                <p class="text-gray-400">AI-powered algorithms connecting professionals with ideal opportunities.</p>
+                                <h4 class="text-base sm:text-lg font-bold text-white mb-2">Global Skill Matching</h4>
+                                <p class="text-gray-400 text-sm sm:text-base">AI-powered algorithms connecting professionals with ideal opportunities.</p>
                             </div>
                         </div>
                         
-                        <div class="flex items-start space-x-4 glass-card">
+                        <div class="flex items-start space-x-4 glass-card p-4 sm:p-6">
                             <div class="feature-icon flex-shrink-0" style="background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(168, 85, 247, 0.1)); border-color: rgba(168, 85, 247, 0.3);">
                                 <i class="fas fa-certificate" style="color: #a855f7;"></i>
                             </div>
                             <div>
-                                <h4 class="text-lg font-bold text-white mb-2">Certification Tracking</h4>
-                                <p class="text-gray-400">Comprehensive skill verification and industry credential management.</p>
+                                <h4 class="text-base sm:text-lg font-bold text-white mb-2">Certification Tracking</h4>
+                                <p class="text-gray-400 text-sm sm:text-base">Comprehensive skill verification and industry credential management.</p>
                             </div>
                         </div>
 
-                        <div class="flex items-start space-x-4 glass-card">
+                        <div class="flex items-start space-x-4 glass-card p-4 sm:p-6">
                             <div class="feature-icon flex-shrink-0" style="background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(168, 85, 247, 0.1)); border-color: rgba(168, 85, 247, 0.3);">
                                 <i class="fas fa-network-wired" style="color: #a855f7;"></i>
                             </div>
                             <div>
-                                <h4 class="text-lg font-bold text-white mb-2">Professional Network</h4>
-                                <p class="text-gray-400">Build meaningful connections with industry leaders and peers.</p>
+                                <h4 class="text-base sm:text-lg font-bold text-white mb-2">Professional Network</h4>
+                                <p class="text-gray-400 text-sm sm:text-base">Build meaningful connections with industry leaders and peers.</p>
                             </div>
                         </div>
                     </div>
 
-                    <a href="#contact" class="btn-primary inline-block px-10 py-4 rounded-full text-white font-semibold shadow-2xl transition duration-500" style="background: linear-gradient(135deg, #a855f7, #c084fc);">
+                    <a href="#contact" class="btn-primary inline-block px-8 py-4 rounded-full text-white font-semibold shadow-2xl transition duration-500 w-full sm:w-auto" style="background: linear-gradient(135deg, #a855f7, #c084fc);">
                         Join Network <i class="fas fa-arrow-right ml-2"></i>
                     </a>
                 </div>
@@ -638,17 +757,17 @@
         </section>
 
         <!-- Testimonial Section -->
-        <section class="py-32 relative">
-            <div class="max-w-4xl mx-auto px-6 text-center">
+        <section class="py-16 sm:py-32 relative">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
                 <div class="animate-on-scroll">
                     <div class="premium-badge mb-8 mx-auto">Testimonials</div>
-                    <h2 class="text-5xl md:text-6xl font-bold mb-16 text-white">Trusted by Innovators</h2>
+                    <h2 class="text-4xl sm:text-5xl md:text-6xl font-bold mb-16 text-white">Trusted by Innovators</h2>
                     
-                    <div class="glass-card max-w-3xl mx-auto p-12">
+                    <div class="glass-card max-w-3xl mx-auto p-8 sm:p-12">
                         <div class="mb-8">
                             <i class="fas fa-quote-left text-comp-accent text-4xl opacity-40"></i>
                         </div>
-                        <p class="text-2xl text-gray-300 mb-8 leading-relaxed">
+                        <p class="text-xl sm:text-2xl text-gray-300 mb-8 leading-relaxed">
                             CompileX transformed our approach to education technology. Their innovative solutions and dedication to excellence are unmatched in the industry.
                         </p>
                         <div class="flex items-center justify-center space-x-4">
@@ -664,18 +783,18 @@
         </section>
 
         <!-- CTA Section -->
-        <section id="contact" class="py-40 text-center relative overflow-hidden">
+        <section id="contact" class="py-20 sm:py-40 text-center relative overflow-hidden">
             <div class="absolute inset-0 bg-gradient-to-b from-transparent via-comp-accent/5 to-transparent"></div>
-            <div class="max-w-4xl mx-auto px-6 animate-on-scroll relative z-10">
-                <h2 class="text-5xl md:text-7xl font-bold mb-8 text-white leading-tight">Ready to Build<br>the Future?</h2>
-                <p class="text-xl md:text-2xl font-light text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 animate-on-scroll relative z-10">
+                <h2 class="text-4xl sm:text-5xl md:text-7xl font-bold mb-8 text-white leading-tight">Ready to Build<br>the Future?</h2>
+                <p class="text-lg sm:text-xl md:text-2xl font-light text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
                     Partner with CompileX to transform groundbreaking ideas into market-defining realities.
                 </p>
-                <div class="flex flex-col sm:flex-row gap-5 justify-center">
-                    <a href="mailto:info@compilex.com" class="btn-primary px-12 py-5 text-xl font-semibold rounded-full text-white shadow-2xl transition duration-500">
+                <div class="flex flex-col sm:flex-row gap-5 justify-center w-full">
+                    <a href="mailto:info@compilex.com" class="btn-primary px-8 py-4 sm:px-12 sm:py-5 text-lg sm:text-xl font-semibold rounded-full text-white shadow-2xl transition duration-500 w-full sm:w-auto">
                         <i class="fas fa-envelope mr-2"></i> Contact Our Team
                     </a>
-                    <a href="#main" class="px-12 py-5 text-xl font-semibold rounded-full border-2 border-white/20 text-white hover:bg-white/5 hover:border-white/30 transition duration-500">
+                    <a href="#main" class="px-8 py-4 sm:px-12 sm:py-5 text-lg sm:text-xl font-semibold rounded-full border-2 border-white/20 text-white hover:bg-white/5 hover:border-white/30 transition duration-500 w-full sm:w-auto">
                         <i class="fas fa-phone mr-2"></i> Schedule Call
                     </a>
                 </div>
@@ -685,11 +804,11 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-black border-t border-gray-800/50 py-20">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-12 mb-16">
+    <footer class="bg-black border-t border-gray-800/50 py-12 sm:py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="footer-grid grid grid-cols-2 md:grid-cols-5 gap-12 mb-16">
                 <div class="col-span-2 md:col-span-1">
-                    <p class="text-3xl font-bold text-white mb-4">CompileX</p>
+                    <p class="text-2xl sm:text-3xl font-bold text-white mb-4">CompileX</p>
                     <p class="text-gray-400 mb-8 text-sm leading-relaxed">Engineering tomorrow, today.</p>
                     <div class="flex space-x-4">
                         <a href="#" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-comp-accent hover:border-comp-accent/50 transition duration-300">
@@ -733,9 +852,9 @@
                 <div>
                     <h5 class="font-bold text-white mb-5 uppercase text-xs tracking-wider">Newsletter</h5>
                     <p class="text-gray-400 text-xs mb-4 leading-relaxed">Stay updated with our latest innovations.</p>
-                    <div class="flex">
-                        <input type="email" placeholder="Your email" class="flex-1 px-4 py-2.5 bg-white/5 border border-white/10 rounded-l-lg text-white text-sm focus:outline-none focus:border-comp-accent/50 transition">
-                        <button class="px-4 py-2.5 bg-comp-accent text-white rounded-r-lg hover:bg-comp-accent/80 transition">
+                    <div class="flex flex-col sm:flex-row">
+                        <input type="email" placeholder="Your email" class="flex-1 px-4 py-2.5 bg-white/5 border border-white/10 rounded-lg sm:rounded-l-lg text-white text-sm focus:outline-none focus:border-comp-accent/50 transition mb-2 sm:mb-0">
+                        <button class="px-4 py-2.5 bg-comp-accent text-white rounded-lg sm:rounded-r-lg hover:bg-comp-accent/80 transition w-full sm:w-auto">
                             <i class="fas fa-paper-plane text-sm"></i>
                         </button>
                     </div>
@@ -749,6 +868,24 @@
     </footer>
 
     <script>
+        // Astronaut control
+        const bigAstronaut = document.getElementById('bigAstronaut');
+        const floatingAstronaut = document.getElementById('floatingAstronaut');
+        const scrollThreshold = 200;
+
+        function handleAstronauts() {
+            const scrollY = window.scrollY;
+            if (scrollY > scrollThreshold) {
+                bigAstronaut.classList.remove('show');
+                bigAstronaut.classList.add('hide');
+                floatingAstronaut.classList.add('show');
+            } else {
+                bigAstronaut.classList.remove('hide');
+                bigAstronaut.classList.add('show');
+                floatingAstronaut.classList.remove('show');
+            }
+        }
+
         // Navbar scroll effect
         window.addEventListener('scroll', () => {
             const navbar = document.getElementById('navbar');
@@ -757,6 +894,12 @@
             } else {
                 navbar.classList.remove('scrolled');
             }
+            handleAstronauts();
+        });
+
+        // Initial show big on load
+        window.addEventListener('load', () => {
+            bigAstronaut.classList.add('show');
         });
 
         // Scroll animations
@@ -851,6 +994,7 @@
             animateCounters();
             initStars();
             animateStars();
+            handleAstronauts();
         });
         
         // Reinitialize on window resize
@@ -858,4 +1002,3 @@
     </script>
 </body>
 </html>
-
